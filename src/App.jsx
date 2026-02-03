@@ -92,7 +92,8 @@ function App() {
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      <h2>🚗 Smart Parking Lot System</h2>
+      <h2>🚗 Smart Parking Management System</h2>
+
 
       <h3>Add Parking Slot</h3>
       <input
