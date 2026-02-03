@@ -15,28 +15,38 @@ function App() {
   const [message, setMessage] = useState("");
 
   // Add parking slot
-  const addSlot = () => {
-    if (!slotNo) {
-      setMessage("Slot number required");
-      return;
-    }
 
-    if (slots.find((s) => s.slotNo === Number(slotNo))) {
-      setMessage("Slot already exists");
-      return;
-    }
+const addSlot = () => {
+  const slotNumber = Number(slotNo);
 
-    const newSlot = {
-      slotNo: Number(slotNo),
-      isCovered,
-      isEVCharging,
-      isOccupied: false,
-    };
+  // validation
+  if (!slotNo) {
+    setMessage("Slot number required");
+    return;
+  }
 
-    setSlots([...slots, newSlot].sort((a, b) => a.slotNo - b.slotNo));
-    setSlotNo("");
-    setMessage(`Slot ${slotNo} added`);
+  if (!Number.isInteger(slotNumber) || slotNumber <= 0) {
+    setMessage("Slot number must be a positive number");
+    return;
+  }
+
+  if (slots.find((s) => s.slotNo === slotNumber)) {
+    setMessage("Slot already exists");
+    return;
+  }
+
+  const newSlot = {
+    slotNo: slotNumber,
+    isCovered,
+    isEVCharging,
+    isOccupied: false,
   };
+
+  setSlots([...slots, newSlot].sort((a, b) => a.slotNo - b.slotNo));
+  setSlotNo("");
+  setMessage(`Slot ${slotNumber} added successfully`);
+};
+
 
   // Park vehicle
   const parkVehicle = () => {
@@ -94,14 +104,17 @@ function App() {
       <h1>🚗 Smart Parking Lot System</h1>
 
       <div className="card">
-        <h2>Add Parking Slot</h2>
+        <h2>PLEASE ADD PARKING SLOT</h2>
         <div className="row">
           <input
-            type="number"
-            placeholder="Slot Number"
-            value={slotNo}
-            onChange={(e) => setSlotNo(e.target.value)}
-          />
+              type="number"
+              min="1"              // 👈 blocks negative & zero
+              step="1"             // 👈 blocks decimals
+              placeholder="Slot Number"
+              value={slotNo}
+              onChange={(e) => setSlotNo(e.target.value)}
+           />
+
           <label>
             <input
               type="checkbox"
@@ -123,7 +136,7 @@ function App() {
       </div>
 
       <div className="card">
-        <h2>All Parking Slots</h2>
+        <h2>ALL PARKING SLOTS</h2>
         <div className="slots">
           {slots.length === 0 && <p>No slots added yet</p>}
           {slots.map((slot) => (
@@ -141,7 +154,7 @@ function App() {
       </div>
 
       <div className="card">
-        <h2>Park Vehicle</h2>
+        <h2>PARK VEHICLE</h2>
         <label>
           <input
             type="checkbox"
@@ -162,7 +175,7 @@ function App() {
       </div>
 
       <div className="card">
-        <h2>Remove Vehicle</h2>
+        <h2>REMOVE VEHICLE</h2>
         <input
           type="number"
           placeholder="Slot Number"
@@ -173,7 +186,7 @@ function App() {
       </div>
 
       <div className="output">
-        <strong>Status:</strong> {message}
+        <strong>OUTPUT DISPLAY PANEL : </strong> {message}
       </div>
     </div>
   );
