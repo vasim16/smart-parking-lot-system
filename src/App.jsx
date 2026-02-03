@@ -101,7 +101,7 @@ const addSlot = () => {
 
   return (
     <div className="app">
-      <h1>🚗 Smart Parking Lot System</h1>
+      <h1>Smart Parking Lot System</h1>
 
       <div className="card">
         <h2>PLEASE ADD PARKING SLOT</h2>
