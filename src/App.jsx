@@ -14,7 +14,7 @@ function App() {
   const [removeSlotNo, setRemoveSlotNo] = useState("");
   const [message, setMessage] = useState("");
 
-  // ADD SLOT
+  // Add parking slot
   const addSlot = () => {
     if (!slotNo) {
       setMessage("Slot number required");
@@ -34,16 +34,16 @@ function App() {
     };
 
     setSlots([...slots, newSlot].sort((a, b) => a.slotNo - b.slotNo));
-    setMessage(`Slot ${slotNo} added`);
     setSlotNo("");
+    setMessage(`Slot ${slotNo} added`);
   };
 
-  // PARK VEHICLE
+  // Park vehicle
   const parkVehicle = () => {
-    const available = slots.filter((slot) => {
-      if (slot.isOccupied) return false;
-      if (needsEV && !slot.isEVCharging) return false;
-      if (needsCover && !slot.isCovered) return false;
+    const available = slots.filter((s) => {
+      if (s.isOccupied) return false;
+      if (needsEV && !s.isEVCharging) return false;
+      if (needsCover && !s.isCovered) return false;
       return true;
     });
 
@@ -52,20 +52,18 @@ function App() {
       return;
     }
 
-    const nearest = available[0];
+    const chosen = available[0];
 
     setSlots(
-      slots.map((slot) =>
-        slot.slotNo === nearest.slotNo
-          ? { ...slot, isOccupied: true }
-          : slot
+      slots.map((s) =>
+        s.slotNo === chosen.slotNo ? { ...s, isOccupied: true } : s
       )
     );
 
-    setMessage(`Vehicle parked at Slot ${nearest.slotNo}`);
+    setMessage(`Vehicle parked at Slot ${chosen.slotNo}`);
   };
 
-  // REMOVE VEHICLE
+  // Remove vehicle
   const removeVehicle = () => {
     const slot = slots.find((s) => s.slotNo === Number(removeSlotNo));
 
@@ -87,90 +85,96 @@ function App() {
       )
     );
 
-    setMessage(`Slot ${removeSlotNo} is now free`);
     setRemoveSlotNo("");
+    setMessage(`Slot ${removeSlotNo} is now free`);
   };
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      <h2>🚗 Smart Parking Management System</h2>
+    <div className="app">
+      <h1>🚗 Smart Parking Lot System</h1>
 
+      <div className="card">
+        <h2>Add Parking Slot</h2>
+        <div className="row">
+          <input
+            type="number"
+            placeholder="Slot Number"
+            value={slotNo}
+            onChange={(e) => setSlotNo(e.target.value)}
+          />
+          <label>
+            <input
+              type="checkbox"
+              checked={isCovered}
+              onChange={() => setIsCovered(!isCovered)}
+            />
+            Covered
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={isEVCharging}
+              onChange={() => setIsEVCharging(!isEVCharging)}
+            />
+            EV Charging
+          </label>
+          <button onClick={addSlot}>Add Slot</button>
+        </div>
+      </div>
 
-      <h3>Add Parking Slot</h3>
-      <input
-        type="number"
-        placeholder="Slot No"
-        value={slotNo}
-        onChange={(e) => setSlotNo(e.target.value)}
-      />
-      <label>
+      <div className="card">
+        <h2>All Parking Slots</h2>
+        <div className="slots">
+          {slots.length === 0 && <p>No slots added yet</p>}
+          {slots.map((slot) => (
+            <div
+              key={slot.slotNo}
+              className={`slot ${slot.isOccupied ? "occupied" : "free"}`}
+            >
+              <strong>Slot {slot.slotNo}</strong>
+              <p>{slot.isCovered ? "Covered" : "Open"}</p>
+              <p>{slot.isEVCharging ? "EV" : "Non-EV"}</p>
+              <p>{slot.isOccupied ? "Occupied ❌" : "Available ✅"}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="card">
+        <h2>Park Vehicle</h2>
+        <label>
+          <input
+            type="checkbox"
+            checked={needsEV}
+            onChange={() => setNeedsEV(!needsEV)}
+          />
+          Needs EV
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={needsCover}
+            onChange={() => setNeedsCover(!needsCover)}
+          />
+          Needs Cover
+        </label>
+        <button onClick={parkVehicle}>Park Vehicle</button>
+      </div>
+
+      <div className="card">
+        <h2>Remove Vehicle</h2>
         <input
-          type="checkbox"
-          checked={isCovered}
-          onChange={() => setIsCovered(!isCovered)}
+          type="number"
+          placeholder="Slot Number"
+          value={removeSlotNo}
+          onChange={(e) => setRemoveSlotNo(e.target.value)}
         />
-        Covered
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          checked={isEVCharging}
-          onChange={() => setIsEVCharging(!isEVCharging)}
-        />
-        EV Charging
-      </label>
-      <button onClick={addSlot}>Add Slot</button>
+        <button onClick={removeVehicle}>Remove</button>
+      </div>
 
-      <hr />
-
-      <h3>All Slots</h3>
-      <ul>
-        {slots.map((slot) => (
-          <li key={slot.slotNo}>
-            Slot {slot.slotNo} |{" "}
-            {slot.isCovered ? "Covered" : "Open"} |{" "}
-            {slot.isEVCharging ? "EV" : "Non-EV"} |{" "}
-            {slot.isOccupied ? "❌ Occupied" : "✅ Free"}
-          </li>
-        ))}
-      </ul>
-
-      <hr />
-
-      <h3>Park Vehicle</h3>
-      <label>
-        <input
-          type="checkbox"
-          checked={needsEV}
-          onChange={() => setNeedsEV(!needsEV)}
-        />
-        Needs EV
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          checked={needsCover}
-          onChange={() => setNeedsCover(!needsCover)}
-        />
-        Needs Covered
-      </label>
-      <button onClick={parkVehicle}>Park</button>
-
-      <hr />
-
-      <h3>Remove Vehicle</h3>
-      <input
-        type="number"
-        placeholder="Slot No"
-        value={removeSlotNo}
-        onChange={(e) => setRemoveSlotNo(e.target.value)}
-      />
-      <button onClick={removeVehicle}>Remove</button>
-
-      <hr />
-
-      <h3>Output</h3>
-      <p>{message}</p>
+      <div className="output">
+        <strong>Status:</strong> {message}
+      </div>
     </div>
   );
 }
