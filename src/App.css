@@ -7,7 +7,7 @@ body {
   min-height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
 
-  background-image: url("./assets/8.avif");
+  background-image: url("./assets/background.avif");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -19,31 +19,31 @@ body {
   width: 100%;
   min-height: 100vh;
   padding: 30px 50px;
-  background: transparent;   /* IMPORTANT */
+  background: transparent;   
 }
 
 h1 {
   display: flex;
   align-items: center;
-  justify-content: center;   /* CENTER HORIZONTALLY */
+  justify-content: center;   
   gap: 12px;
 
   text-align: center;
   font-size: 2.6rem;
   margin-bottom: 35px;
 
-  color: #111827;           /* BLACK COLOR */
+  color: #02010c;           
   font-weight: 700;
 }
 
 .card {
   width: 100%;
-  max-width: 900px;          /* 👈 controls card width */
-  margin: 0 auto 30px auto;  /* 👈 centers the card */
+  max-width: 900px;          
+  margin: 0 auto 30px auto;
   padding: 25px;
   border-radius: 14px;
 
-  background: rgba(255, 255, 255, 0.15); /* transparent */
+  background: rgba(255, 255, 255, 0.15); 
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 
@@ -114,8 +114,8 @@ button:hover {
 
 .output {
   width: 100%;
-  max-width: 900px;          /* SAME as card */
-  margin: 0 auto 30px auto;  /* CENTER it */
+  max-width: 900px;         
+  margin: 0 auto 30px auto; 
   padding: 18px 25px;
   border-radius: 14px;
 

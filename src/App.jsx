@@ -14,7 +14,7 @@ function App() {
   const [removeSlotNo, setRemoveSlotNo] = useState("");
   const [message, setMessage] = useState("");
 
-  // Add parking slot
+  // parking slot
 
 const addSlot = () => {
   const slotNumber = Number(slotNo);
@@ -108,8 +108,8 @@ const addSlot = () => {
         <div className="row">
           <input
               type="number"
-              min="1"              // 👈 blocks negative & zero
-              step="1"             // 👈 blocks decimals
+              min="1"              
+              step="1"             
               placeholder="Slot Number"
               value={slotNo}
               onChange={(e) => setSlotNo(e.target.value)}
