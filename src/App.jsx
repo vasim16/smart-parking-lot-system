@@ -1,3 +1,4 @@
+// Smart Parking Lot System - Assignment Implementation
 import { useState } from "react";
 
 function App() {
